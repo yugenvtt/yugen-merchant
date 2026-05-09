@@ -1,6 +1,15 @@
 # yugen-merchant
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=y_xd5sPbzKs">
+    <img src="https://img.youtube.com/vi/y_xd5sPbzKs/maxresdefault.jpg" width="100%" alt="Watch the demo">
+  </a>
+  <br>
+  <a href="https://www.youtube.com/watch?v=y_xd5sPbzKs">Click here for video demonstration</a>
+</p>
 
-A dynamic NPC merchant module for Foundry VTT V14, featuring a universal GUI and quality-based pricing.
+_A dynamic NPC merchant module for Foundry VTT V14, featuring a universal GUI and quality-based pricing._
+
+---
 
 ## Features
 
