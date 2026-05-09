@@ -1,0 +1,27 @@
+<header class="shop-header">
+	<div class="merchant-info flexrow">
+		<img src="{{merchant.img}}" title="{{merchant.name}}" class="merchant-img" />
+		<div class="merchant-details">
+			<h1>{{merchant.name}}</h1>
+			<div class="discounts flexrow">
+				<span class="discount-pill">Buy: {{buy_multiplier}}%</span>
+				<span class="discount-pill">Sell: {{sell_multiplier}}%</span>
+				<span class="discount-pill funds">
+					<i class="fas fa-coins"></i> 
+					{{#if merchant.is_infinite}}
+						Infinite
+					{{else}}
+						{{merchant.funds.gp}} gp
+					{{/if}}
+				</span>
+			</div>
+		</div>
+	</div>
+	<nav class="tabs shop-tabs flexrow" data-group="shop">
+		{{#each tabs}}
+		<a class="item {{this.cssClass}}" data-action="tab" data-group="{{this.group}}" data-tab="{{this.id}}">
+			<i class="{{this.icon}}"></i> {{this.label}}
+		</a>
+		{{/each}}
+	</nav>
+</header>

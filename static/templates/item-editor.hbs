@@ -1,0 +1,69 @@
+<form class="yugen-item-editor">
+	<header class="editor-header">
+		<img class="profile-img" src="{{item.img}}" title="{{item.name}}" />
+		<div class="header-details">
+			<h1 class="charname">{{item.name}}</h1>
+		</div>
+	</header>
+
+	<fieldset>
+		<legend>General Details</legend>
+		<div class="form-group">
+			<label>Price Value</label>
+			<div class="form-fields">
+				<input type="number" name="price" value="{{item.system.price.value}}" step="any" min="0">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label>Currency</label>
+			<div class="form-fields">
+				<select name="denomination">
+					<option value="cp" {{#if (eq item.system.price.denomination "cp")}}selected{{/if}}>Copper (cp)</option>
+					<option value="sp" {{#if (eq item.system.price.denomination "sp")}}selected{{/if}}>Silver (sp)</option>
+					<option value="ep" {{#if (eq item.system.price.denomination "ep")}}selected{{/if}}>Electrum (ep)</option>
+					<option value="gp" {{#if (eq item.system.price.denomination "gp")}}selected{{/if}}>Gold (gp)</option>
+					<option value="pp" {{#if (eq item.system.price.denomination "pp")}}selected{{/if}}>Platinum (pp)</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label>Stock Quantity</label>
+			<div class="form-fields">
+				<input type="number" name="quantity" value="{{item.system.quantity}}" min="1" step="1">
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend>Randomization</legend>
+		<div class="form-group">
+			<label>Price Range (Min / Max)</label>
+			<div class="form-fields">
+				<input type="number" class="price-min" placeholder="Min" value="0" step="any">
+				<input type="number" class="price-max" placeholder="Max" value="100" step="any">
+				<button type="button" class="randomize-price" title="Randomize Price">
+					<i class="fas fa-dice"></i>
+				</button>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label>Stock Range (Min / Max)</label>
+			<div class="form-fields">
+				<input type="number" class="stock-min" placeholder="Min" value="1" step="1">
+				<input type="number" class="stock-max" placeholder="Max" value="10" step="1">
+				<button type="button" class="randomize-stock" title="Randomize Stock">
+					<i class="fas fa-dice"></i>
+				</button>
+			</div>
+		</div>
+	</fieldset>
+
+	<footer class="sheet-footer">
+		<button type="submit" name="submit">
+			<i class="fas fa-save"></i> Save Changes
+		</button>
+	</footer>
+</form>

@@ -1,0 +1,97 @@
+<div class="yugen-merchant-config">
+	<fieldset class="config-group">
+		<legend>{{localize 'yugen-merchant.config.merchant-status.name'}}</legend>
+		<div class="form-group">
+			<label>Enable Merchant Mode</label>
+			<div class="form-fields">
+				<input type="checkbox" class="merchant-toggle" {{#if is_merchant}}checked{{/if}}>
+			</div>
+			<p class="hint">{{localize 'yugen-merchant.config.merchant-status.hint'}}</p>
+		</div>
+
+		<div class="form-group">
+			<label>{{localize 'yugen-merchant.config.merchant-status.infinite-funds'}}</label>
+			<div class="form-fields">
+				<input type="checkbox" class="infinite-funds-toggle" {{#if is_infinite}}checked{{/if}}>
+			</div>
+			<p class="hint">{{localize 'yugen-merchant.config.merchant-status.infinite-hint'}}</p>
+		</div>
+	</fieldset>
+
+	<fieldset class="discount-group">
+		<legend>{{localize 'yugen-merchant.config.merchant-discounts.name'}}</legend>
+		<div class="form-group">
+			<label>{{localize 'yugen-merchant.config.merchant-discounts.buy-discount'}}</label>
+			<div class="form-fields">
+				<input type="number" class="buy-multiplier" value="{{buy_multiplier}}" min="0" step="1">
+			</div>
+			<p class="hint">{{localize 'yugen-merchant.config.merchant-discounts.buy-hint'}}</p>
+		</div>
+
+		<div class="form-group">
+			<label>{{localize 'yugen-merchant.config.merchant-discounts.sell-discount'}}</label>
+			<div class="form-fields">
+				<input type="number" class="sell-multiplier" value="{{sell_multiplier}}" min="0" step="1">
+			</div>
+			<p class="hint">{{localize 'yugen-merchant.config.merchant-discounts.sell-hint'}}</p>
+		</div>
+	</fieldset>
+
+	<fieldset class="rarity-group">
+		<legend>{{localize 'yugen-merchant.config.rarity-multipliers.name'}}</legend>
+		<p class="hint">{{localize 'yugen-merchant.config.rarity-multipliers.hint'}}</p>
+		
+		<div class="rarity-grid">
+			{{#each rarity_multipliers}}
+			<div class="form-group rarity-item">
+				<label>{{localize (concat 'yugen-merchant.config.rarity-multipliers.' @key)}}</label>
+				<div class="form-fields">
+					<input type="number" class="rarity-multiplier" data-rarity="{{@key}}" value="{{this}}" min="0" step="1">
+					<span class="unit">%</span>
+				</div>
+			</div>
+			{{/each}}
+		</div>
+
+		<button type="button" class="randomize-rarities">
+			<i class="fas fa-dice"></i> {{localize 'yugen-merchant.config.rarity-multipliers.randomize'}}
+		</button>
+	</fieldset>
+
+	<fieldset class="inventory-group">
+		<legend><i class="fas fa-boxes"></i> {{localize 'yugen-merchant.config.virtual-inventory.name'}}</legend>
+		
+		<div class="inventory-table">
+			<ol class="inventory-list">
+				{{#each inventory}}
+				<li class="inventory-item" data-index="{{@index}}">
+					<div class="item-name">
+						<div class="item-image">
+							{{#if this.img}}
+								<img src="{{this.img}}" alt="{{this.name}}" onerror="this.style.display='none'">
+							{{else}}
+								<i class="fas fa-box"></i>
+							{{/if}}
+						</div>
+						<span class="name-text">{{this.name}}</span>
+						<span class="qty-badge">(x{{this.system.quantity}})</span>
+					</div>
+					
+					<div class="item-controls">
+						<button type="button" class="edit-item control-button" title="Edit Item Details">
+							<i class="fa-solid fa-pen-to-square"></i>
+						</button>
+						<button type="button" class="delete-item control-button" title="Remove Item">
+							<i class="fa-solid fa-trash"></i>
+						</button>
+					</div>
+				</li>
+				{{else}}
+				<li class="empty-inventory">
+					<p class="hint">{{localize 'yugen-merchant.config.virtual-inventory.empty-hint'}}</p>
+				</li>
+				{{/each}}
+			</ol>
+		</div>
+	</fieldset>
+</div>

@@ -1,0 +1,58 @@
+<div class="yugen-shop-container">
+	<header class="shop-header">
+		<div class="merchant-info flexrow">
+			<img src="{{merchant.img}}" title="{{merchant.name}}" class="merchant-img" />
+			<div class="merchant-details">
+				<h1>{{merchant.name}}</h1>
+				<div class="discounts flexrow">
+					<span class="discount-pill">Buy: {{buy_multiplier}}%</span>
+					<span class="discount-pill">Sell: {{sell_multiplier}}%</span>
+				</div>
+			</div>
+		</div>
+		<nav class="tabs shop-tabs flexrow">
+			<a class="item {{#if (eq active_tab 'buy')}}active{{/if}}" data-tab="buy">
+				<i class="fas fa-shopping-cart"></i> Buy
+			</a>
+			<a class="item {{#if (eq active_tab 'sell')}}active{{/if}}" data-tab="sell">
+				<i class="fas fa-coins"></i> Sell
+			</a>
+		</nav>
+	</header>
+
+	<section class="shop-content">
+		<div class="tab {{#if (eq active_tab 'buy')}}active{{/if}}" data-tab="buy">
+			<ol class="shop-list">
+				{{#each buy_items}}
+				<li class="shop-item flexrow" data-item-index="{{this.index}}">
+					<div class="item-name flexrow">
+						<img src="{{this.img}}" />
+						<h4>{{this.name}} <span class="qty-badge">(x{{this.quantity}})</span></h4>
+					</div>
+					<div class="item-price">{{this.price}} {{this.denom}}</div>
+					<button class="buy-button">Buy</button>
+				</li>
+				{{else}}
+				<p class="empty-msg">The merchant has no items for sale.</p>
+				{{/each}}
+			</ol>
+		</div>
+
+		<div class="tab {{#if (eq active_tab 'sell')}}active{{/if}}" data-tab="sell">
+			<ol class="shop-list">
+				{{#each sell_items}}
+				<li class="shop-item flexrow" data-item-id="{{this.id}}">
+					<div class="item-name flexrow">
+						<img src="{{this.img}}" />
+						<h4>{{this.name}} <span class="qty-badge">(x{{this.quantity}})</span></h4>
+					</div>
+					<div class="item-price">{{this.price}} {{this.denom}}</div>
+					<button class="sell-button">Sell</button>
+				</li>
+				{{else}}
+				<p class="empty-msg">You have no items to sell.</p>
+				{{/each}}
+			</ol>
+		</div>
+	</section>
+</div>
