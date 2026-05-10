@@ -2,7 +2,7 @@
 	"id": "yugen-merchant",
 	"title": "yugen-merchant",
 	"description": "Dynamic npc merchant module with quality-based pricing and custom buy/sell rates.",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"library": false,
 	"authors": [
 		{
