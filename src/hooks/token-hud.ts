@@ -7,7 +7,7 @@ import { FLAGS, MODULE_ID } from '../module/constants.js';
 import { get_flag } from '../module/utils.js';
 import { MerchantShop } from '../module/merchant-shop.js';
 
-export const renderTokenHUD = ( hud: any, html: any, _data: any ): void => 
+export const render_token_hud = ( hud: any, html: any, _data: any ): void => 
 {
 	/** 
 	 * get the token document. 

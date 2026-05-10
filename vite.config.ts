@@ -48,17 +48,9 @@ export default defineConfig( async ( { mode } ) =>
 				{
 					assetFileNames: ( asset_info ) => 
 					{
-						if ( asset_info.names?.[ 0 ]?.endsWith( '.css' ) ) 
-						{
-							return 'styles/module.css';
-						}
 						return asset_info.names?.[ 0 ] || 'assets/[name].[ext]';
 					},
 				},
-			},
-			watch: 
-			{
-				include: [ 'src/**', 'static/**' ]
 			},
 		},
 		plugins: 

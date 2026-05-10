@@ -11,7 +11,7 @@
 			"discord": ""
 		}
 	],
-	"scripts": [
+	"esmodules": [
 		"scripts/module.js"
 	],
 	"styles": [

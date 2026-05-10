@@ -1,6 +1,6 @@
 /**
  * @file src/module/constants.ts
- * global constants for the merchant module
+ * global constants for the yugen-merchant module.
  **/
 
 export const MODULE_ID = 'yugen-merchant';
@@ -14,5 +14,6 @@ export const FLAGS =
 	QUALITY_MULTIPLIERS: 'quality-multipliers',
 	INFINITE_FUNDS: 'infinite-funds',
 	GREETING_MESSAGE: 'greeting-message',
-	ALLOW_OWNER_MANAGE: 'allow-owner-manage'
+	ALLOW_OWNER_MANAGE: 'allow-owner-manage',
+	INTERACTION_RANGE: 'interaction-range'
 };

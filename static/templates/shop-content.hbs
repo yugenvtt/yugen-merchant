@@ -73,6 +73,13 @@
 							<input type="checkbox" data-action="toggle-owner-manage" class="owner-manage-toggle" {{#if merchant.allow_owner_manage}}checked{{/if}} {{#unless is_gm}}disabled{{/unless}}>
 						</div>
 					</div>
+
+					<div class="form-group flexrow">
+						<label>{{localize 'yugen-merchant.config.merchant-status.interaction-range'}}</label>
+						<div class="form-fields">
+							<input type="number" data-action="update-range" class="interaction-range" value="{{merchant.interaction_range}}" min="0" step="1">
+						</div>
+					</div>
 				</div>
 				<p class="hint">{{localize 'yugen-merchant.config.merchant-status.hint'}}</p>
 			</fieldset>

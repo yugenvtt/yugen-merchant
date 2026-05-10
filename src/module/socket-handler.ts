@@ -42,8 +42,8 @@ export class SocketHandler
 			return;
 		}
 
-		const token = ( canvas as any ).tokens?.get( data.tokenId ) || ( canvas as any ).tokens?.placeables.find( ( t: any ) => t.id === data.tokenId );
-		const player_actor = ( game as any ).actors.get( data.playerId );
+		const token = ( canvas as any ).tokens?.get( data.token_id ) || ( canvas as any ).tokens?.placeables.find( ( t: any ) => t.id === data.token_id );
+		const player_actor = ( game as any ).actors.get( data.player_id );
 		if ( !token || !player_actor ) 
 		{
 			/** abort if token or actor cannot be resolved **/
@@ -51,7 +51,7 @@ export class SocketHandler
 		}
 
 		const inventory = get_flag( token.document, FLAGS.INVENTORY ) ?? [ ];
-		const item_data = inventory[ data.itemIndex ];
+		const item_data = inventory[ data.item_index ];
 		if ( !item_data ) 
 		{
 			return;
@@ -120,7 +120,7 @@ export class SocketHandler
 		}
 		else 
 		{
-			inventory.splice( data.itemIndex, 1 );
+			inventory.splice( data.item_index, 1 );
 		}
 
 		await set_flag( token.document, FLAGS.INVENTORY, inventory, { render: false } );
@@ -137,9 +137,9 @@ export class SocketHandler
 			return;
 		}
 
-		const token = ( canvas as any ).tokens?.get( data.tokenId ) || ( canvas as any ).tokens?.placeables.find( ( t: any ) => t.id === data.tokenId );
-		const player_actor = ( game as any ).actors.get( data.playerId );
-		const item = player_actor?.items.get( data.itemId );
+		const token = ( canvas as any ).tokens?.get( data.token_id ) || ( canvas as any ).tokens?.placeables.find( ( t: any ) => t.id === data.token_id );
+		const player_actor = ( game as any ).actors.get( data.player_id );
+		const item = player_actor?.items.get( data.item_id );
 		
 		if ( !token || !player_actor || !item ) 
 		{
@@ -220,14 +220,14 @@ export class SocketHandler
 		ui.notifications?.info( `${ player_actor.name } sold ${ item.name } for ${ price } ${ denom }.` );
 	}
 
-	static async emit_purchase( tokenId: string, playerId: string, itemIndex: number ): Promise<void> 
+	static async emit_purchase( token_id: string, player_id: string, item_index: number ): Promise<void> 
 	{
 		const data = 
 		{
 			action: 'purchase',
-			tokenId,
-			playerId,
-			itemIndex
+			token_id,
+			player_id,
+			item_index
 		};
 
 		/** gms process their own transactions locally to avoid socket isolation **/
@@ -247,14 +247,14 @@ export class SocketHandler
 		}
 	}
 
-	static async emit_sale( tokenId: string, playerId: string, itemId: string ): Promise<void> 
+	static async emit_sale( token_id: string, player_id: string, item_id: string ): Promise<void> 
 	{
 		const data = 
 		{
 			action: 'sale',
-			tokenId,
-			playerId,
-			itemId
+			token_id,
+			player_id,
+			item_id
 		};
 
 		/** gms process their own transactions locally to avoid socket isolation **/

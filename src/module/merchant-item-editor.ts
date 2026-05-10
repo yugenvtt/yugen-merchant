@@ -71,7 +71,7 @@ export class MerchantItemEditor extends ( ( FormApplication ?? class { } ) as an
 		} );
 	}
 
-	async _updateObject( _event: any, formData: any ) 
+	async _updateObject( _event: any, form_data: any ) 
 	{
 		const inventory = ( foundry.utils as any ).duplicate( this.token_doc.getFlag( MODULE_ID, FLAGS.INVENTORY ) ?? [ ] );
 		const item = inventory[ this.item_index ];
@@ -81,9 +81,9 @@ export class MerchantItemEditor extends ( ( FormApplication ?? class { } ) as an
 			return;
 		}
 
-		item.system.price.value = Math.floor( formData.price );
-		item.system.price.denomination = formData.denomination;
-		item.system.quantity = Math.floor( formData.quantity );
+		item.system.price.value = Math.floor( form_data.price );
+		item.system.price.denomination = form_data.denomination;
+		item.system.quantity = Math.floor( form_data.quantity );
 
 		await set_flag( this.token_doc, FLAGS.INVENTORY, inventory, { render: false } );
 

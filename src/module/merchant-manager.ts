@@ -37,6 +37,11 @@ export class MerchantManager
 		{
 			await set_flag( doc, FLAGS.QUALITY_MULTIPLIERS, this.get_default_quality_multipliers( ) );
 		}
+
+		if ( get_flag( doc, FLAGS.INTERACTION_RANGE ) === undefined ) 
+		{
+			await set_flag( doc, FLAGS.INTERACTION_RANGE, 10 );
+		}
 	}
 
 	/**

@@ -97,6 +97,7 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 		'toggle-owner-manage': MerchantShop._on_toggle_owner_manage,
 		'update-multiplier': MerchantShop._on_update_multiplier,
 		'update-greeting': MerchantShop._on_update_greeting,
+		'update-range': MerchantShop._on_update_range,
 		'randomize-rarities': MerchantShop._on_randomize_rarities,
 		'edit-item': MerchantShop._on_edit_item,
 		'delete-item': MerchantShop._on_delete_item
@@ -110,6 +111,58 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 	static async _on_update_greeting( this: MerchantShop, event: any, target: HTMLInputElement ) 
 	{
 		await set_flag( this.token.document, FLAGS.GREETING_MESSAGE, target.value );
+	}
+
+	static async _on_update_range( this: MerchantShop, event: any, target: HTMLInputElement ) 
+	{
+		await set_flag( this.token.document, FLAGS.INTERACTION_RANGE, parseInt( target.value ) || 0 );
+	}
+
+	/**
+	 * checks if a user (or their controlled token) is within interaction range of the merchant
+	 **/
+	static check_proximity( merchant_token: any, notify: boolean = true ): boolean 
+	{
+		if ( ( game as any ).user.isGM ) 
+		{
+			return true;
+		}
+
+		/** check token first, then actor for range flag **/
+		const doc = merchant_token.document;
+		const range = get_flag( doc, FLAGS.INTERACTION_RANGE ) ?? get_flag( doc.actor, FLAGS.INTERACTION_RANGE ) ?? 10;
+		
+		if ( range <= 0 ) 
+		{
+			return true;
+		}
+
+		const player_token = ( canvas as any ).tokens?.controlled[ 0 ] || ( game as any ).user.character?.getActiveTokens( )[ 0 ];
+
+		if ( !player_token ) 
+		{
+			if ( notify ) 
+			{
+				( ui as any ).notifications?.warn( 'Please control a token to shop.' );
+			}
+			return false;
+		}
+
+		/** V14 robust distance calculation using measurePath **/
+		const waypoints = [ player_token.center, merchant_token.center ];
+		const result = ( canvas as any ).grid.measurePath( waypoints );
+		const distance = result.distance || 0;
+		
+		if ( distance > range ) 
+		{
+			if ( notify ) 
+			{
+				( ui as any ).notifications?.warn( ( game as any ).i18n.format( 'yugen-merchant.notifications.too-far', { range } ) );
+			}
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -127,6 +180,14 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 	{
 		const doc = this.token.document;
 		const is_gm = ( game as any ).user.isGM;
+
+		/** proximity check for players **/
+		if ( !MerchantShop.check_proximity( this.token ) ) 
+		{
+			this.close( );
+			return { };
+		}
+
 		const inventory = get_flag( doc, FLAGS.INVENTORY ) ?? [ ];
 		
 		/** fetch player character inventory for selling **/
@@ -233,7 +294,8 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 				is_infinite: is_infinite,
 				is_merchant: is_merchant,
 				greeting: get_flag( doc, FLAGS.GREETING_MESSAGE ) ?? '',
-				allow_owner_manage: allow_owner_manage
+				allow_owner_manage: allow_owner_manage,
+				interaction_range: get_flag( doc, FLAGS.INTERACTION_RANGE ) ?? 10
 			},
 			buy_multiplier,
 			sell_multiplier,
@@ -273,11 +335,12 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 		/** 
 		 * single delegated click listener for all shop actions.
 		 * this handles buy, sell, edit, delete, and tab switching robustly.
+		 * we ignore inputs to prevent focus issues on click.
 		 **/
 		this.element.addEventListener( 'click', ( event: any ) => 
 		{
 			const target = event.target.closest( '[data-action]' );
-			if ( target ) 
+			if ( target && ![ 'INPUT', 'SELECT', 'TEXTAREA' ].includes( target.tagName ) ) 
 			{
 				this._onAction( event, target );
 			}
