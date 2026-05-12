@@ -30,6 +30,6 @@
 	},
 	"url": "https://github.com/yugenvtt/yugen-merchant",
 	"manifest": "https://raw.githubusercontent.com/yugenvtt/yugen-merchant/refs/heads/main/static/module.json",
-	"download": "https://github.com/yugenvtt/yugen-merchant/releases/download/1.0.0/module.zip",
+	"download": "https://github.com/yugenvtt/yugen-merchant/releases/download/1.0.3/module.zip",
 	"socket": true
 }
