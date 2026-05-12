@@ -8,6 +8,7 @@ import { get_flag, set_flag, calculate_price, get_actor_currency } from './utils
 import { SocketHandler } from './socket-handler.js';
 import { MerchantManager } from './merchant-manager.js';
 import { MerchantItemEditor } from './merchant-item-editor.js';
+import { MerchantServiceEditor } from './merchant-service-editor.js';
 
 const { ApplicationV2, HandlebarsApplicationMixin } = ( foundry.applications.api as any );
 
@@ -69,6 +70,11 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 					icon: 'fas fa-shopping-cart'
 				},
 				{
+					id: 'services',
+					label: 'Services',
+					icon: 'fas fa-hand-holding-heart'
+				},
+				{
 					id: 'sell',
 					label: 'Sell',
 					icon: 'fas fa-coins'
@@ -99,6 +105,10 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 		'update-greeting': MerchantShop._on_update_greeting,
 		'update-range': MerchantShop._on_update_range,
 		'randomize-rarities': MerchantShop._on_randomize_rarities,
+		'buy-service': MerchantShop._on_buy_service,
+		'add-service': MerchantShop._on_add_service,
+		'edit-service': MerchantShop._on_edit_service,
+		'delete-service': MerchantShop._on_delete_service,
 		'edit-item': MerchantShop._on_edit_item,
 		'delete-item': MerchantShop._on_delete_item
 	};
@@ -189,6 +199,7 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 		}
 
 		const inventory = get_flag( doc, FLAGS.INVENTORY ) ?? [ ];
+		const services = get_flag( doc, FLAGS.SERVICES ) ?? [ ];
 		
 		/** fetch player character inventory for selling **/
 		const player_actor = ( game as any ).user.character || ( canvas as any ).tokens?.controlled[ 0 ]?.actor;
@@ -319,6 +330,10 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 					/** warn if this item alone would encumber them, or they are already encumbered **/
 					heavy: weight > 0 && is_encumbered
 				};
+			} ),
+			services: services.map( ( s: any, index: number ) => 
+			{
+				return { ...s, index };
 			} ),
 			sell_items: player_items,
 			rarity_multipliers,
@@ -464,19 +479,51 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 	{
 		event.preventDefault( );
 		const item_index = target.closest( '.shop-item' )?.getAttribute( 'data-item-index' );
+
 		if ( item_index === null || item_index === undefined ) 
 		{
 			return;
 		}
 
-		const player_actor = ( game as any ).user.character || ( canvas as any ).tokens?.controlled[ 0 ]?.actor;
+		const player_token = ( canvas as any ).tokens?.controlled[ 0 ] || ( game as any ).user.character?.getActiveTokens( )[ 0 ];
+		const player_actor = player_token?.actor || ( game as any ).user.character;
+
 		if ( !player_actor ) 
 		{
 			( ui as any ).notifications?.warn( 'please control a token to shop' );
 			return;
 		}
 
-		await SocketHandler.emit_purchase( this.token.id, player_actor.id, parseInt( item_index ) );
+		/** if it is a synthetic token, use token ID for GM resolution fail-safe **/
+		const target_id = player_token ? player_token.id : player_actor.id;
+
+		await SocketHandler.emit_purchase( this.token.id, target_id, parseInt( item_index ) );
+		this.render( );
+	}
+
+	static async _on_buy_service( this: MerchantShop, event: any, target: HTMLElement ) 
+	{
+		event.preventDefault( );
+		const service_index = target.closest( '.shop-item' )?.getAttribute( 'data-service-index' );
+
+		if ( service_index === null || service_index === undefined ) 
+		{
+			return;
+		}
+
+		const player_token = ( canvas as any ).tokens?.controlled[ 0 ] || ( game as any ).user.character?.getActiveTokens( )[ 0 ];
+		const player_actor = player_token?.actor || ( game as any ).user.character;
+
+		if ( !player_actor ) 
+		{
+			( ui as any ).notifications?.warn( 'please control a token to shop' );
+			return;
+		}
+
+		/** if it is a synthetic token, use token ID for GM resolution fail-safe **/
+		const target_id = player_token ? player_token.id : player_actor.id;
+
+		await SocketHandler.emit_purchase_service( this.token.id, target_id, parseInt( service_index ), ( game as any ).user.id );
 		this.render( );
 	}
 
@@ -530,26 +577,56 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 		const item_id = item_row.getAttribute( 'data-item-id' );
 		const item_index = item_row.getAttribute( 'data-item-index' );
 
-		if ( item_id ) 
+		console.log( `yugen-merchant | show-sheet | id: ${ item_id }, index: ${ item_index }` );
+
+		try 
 		{
-			const player_actor = ( game as any ).user.character || ( canvas as any ).tokens?.controlled[ 0 ]?.actor;
-			const item = player_actor?.items.get( item_id );
-			if ( item ) 
+			if ( item_id ) 
 			{
-				item.sheet.render( { force: true } );
+				const player_actor = ( game as any ).user.character || ( canvas as any ).tokens?.controlled[ 0 ]?.actor;
+				const item = player_actor?.items.get( item_id );
+				if ( item ) 
+				{
+					item.sheet.render( { force: true } );
+				}
+			}
+			else if ( item_index !== null ) 
+			{
+				const inventory = get_flag( this.token.document, FLAGS.INVENTORY ) ?? [ ];
+				const item_data = inventory[ parseInt( item_index ) ];
+				
+				if ( item_data ) 
+				{
+					/** instantiate the item purely in memory using the proper V14 document class **/
+					const item_cls = ( CONFIG as any ).Item.documentClass;
+					const temp_item = new item_cls( ( foundry.utils as any ).duplicate( item_data ) );
+					
+					/** force ownership for viewing **/
+					temp_item.updateSource( { 'ownership.default': 3 } );
+					
+					console.log( `yugen-merchant | rendering preview for ${ temp_item.name }` );
+					
+					/** ensure sheet exists and render it **/
+					const sheet = temp_item.sheet;
+					if ( sheet ) 
+					{
+						sheet.render( { force: true } );
+					}
+					else 
+					{
+						console.error( 'yugen-merchant | item preview error: no sheet found for item' );
+						( ui as any ).notifications?.error( 'Could not open item details.' );
+					}
+				}
+				else 
+				{
+					console.error( `yugen-merchant | item at index ${ item_index } not found in inventory` );
+				}
 			}
 		}
-		else if ( item_index !== null ) 
+		catch ( err ) 
 		{
-			const inventory = get_flag( this.token.document, FLAGS.INVENTORY ) ?? [ ];
-			const item_data = inventory[ parseInt( item_index ) ];
-			if ( item_data ) 
-			{
-				/** instantiate the item purely in memory to bypass database permission checks **/
-				const temp_item = new ( Item as any )( ( foundry.utils as any ).duplicate( item_data ) );
-				/** render the sheet for the temporary item instance **/
-				temp_item.sheet.render( { force: true } );
-			}
+			console.error( 'yugen-merchant | show-sheet error:', err );
 		}
 	}
 
@@ -599,6 +676,32 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 		const next = MerchantManager.get_default_quality_multipliers( );
 		await set_flag( this.token.document, FLAGS.QUALITY_MULTIPLIERS, next );
 		this.render( );
+	}
+
+	static _on_add_service( this: MerchantShop, event: any ) 
+	{
+		new MerchantServiceEditor( this.token.document, -1, { }, ( ) => this.render( ) ).render( true );
+	}
+
+	static _on_edit_service( this: MerchantShop, event: any, target: HTMLElement ) 
+	{
+		const index = parseInt( target.closest( '.inventory-item' )?.getAttribute( 'data-index' ) || '-1' );
+		if ( index !== -1 ) 
+		{
+			new MerchantServiceEditor( this.token.document, index, { }, ( ) => this.render( ) ).render( true );
+		}
+	}
+
+	static async _on_delete_service( this: MerchantShop, event: any, target: HTMLElement ) 
+	{
+		const index = parseInt( target.closest( '.inventory-item' )?.getAttribute( 'data-index' ) || '-1' );
+		if ( index !== -1 ) 
+		{
+			const services = get_flag( this.token.document, FLAGS.SERVICES ) ?? [ ];
+			services.splice( index, 1 );
+			await set_flag( this.token.document, FLAGS.SERVICES, services );
+			this.render( );
+		}
 	}
 
 	static _on_edit_item( this: MerchantShop, event: any, target: HTMLElement ) 

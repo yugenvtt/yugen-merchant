@@ -119,7 +119,7 @@ export const init_hook = ( ): void =>
 
 	Hooks.once( 'ready', ( ) => 
 	{
-		/** register sockets **/
+		/** register sockets in ready hook for V14 network stability **/
 		SocketHandler.register( );
 	} );
 

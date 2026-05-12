@@ -472,6 +472,25 @@
 	text-overflow: ellipsis;
 }
 
+.item-name-group 
+{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.item-description 
+{
+	font-size: 0.8em;
+	color: var( --yugen-text-muted );
+	font-weight: 400;
+	font-style: italic;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .shop-item .qty-badge 
 {
 	font-size: 0.85em;
@@ -578,3 +597,43 @@
 	font-style: italic;
 	color: var( --yugen-text-muted );
 }
+
+/** service-specific styles **/
+.price-badge 
+{
+	font-size: 0.85em;
+	color: #634e24;
+	font-weight: bold;
+	margin-left: var( --yugen-space-sm );
+}
+
+.service-editor textarea 
+{
+	min-height: 100px;
+	background: rgba( 255, 255, 255, 0.8 ) !important;
+	color: #111111 !important;
+	border: 1px solid var( --yugen-border );
+	border-radius: 3px;
+	padding: 5px;
+	font-family: inherit;
+}
+
+.service-editor .sheet-footer 
+{
+	margin-top: var( --yugen-space-md );
+	padding-top: var( --yugen-space-sm );
+	border-top: 1px solid var( --yugen-border-light );
+}
+
+.service-editor button[type="submit"] 
+{
+	width: 100%;
+	background: var( --yugen-gold );
+	color: #fff;
+	font-weight: bold;
+	padding: 8px;
+	border: 1px solid #7a663b;
+	border-radius: 4px;
+	cursor: pointer;
+}
+

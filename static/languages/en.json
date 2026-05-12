@@ -29,6 +29,8 @@
 	"yugen-merchant.config.merchant-status.allow-owner": "Allow Owner Management",
 	"yugen-merchant.config.merchant-status.owner-hint": "When enabled, players who own this token can access the Manage tab.",
 	"yugen-merchant.config.merchant-status.interaction-range": "Interaction Range (Feet)",
+	"yugen-merchant.config.merchant-services.name": "Merchant Services",
+	"yugen-merchant.config.merchant-services.hint": "Define services linked to macros that players can purchase.",
 	"yugen-merchant.config.merchant-discounts.name": "Merchant Discounts",
 	"yugen-merchant.config.merchant-discounts.buy-discount": "Buy Discount (%)",
 	"yugen-merchant.config.merchant-discounts.buy-hint": "Players pay this percentage of the item value (Default: 100%).",

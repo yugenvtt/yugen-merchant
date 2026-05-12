@@ -15,5 +15,6 @@ export const FLAGS =
 	INFINITE_FUNDS: 'infinite-funds',
 	GREETING_MESSAGE: 'greeting-message',
 	ALLOW_OWNER_MANAGE: 'allow-owner-manage',
-	INTERACTION_RANGE: 'interaction-range'
+	INTERACTION_RANGE: 'interaction-range',
+	SERVICES: 'services'
 };
