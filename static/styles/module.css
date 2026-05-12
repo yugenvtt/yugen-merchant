@@ -21,6 +21,124 @@
 	--yugen-space-md: 15px;
 	--yugen-space-lg: 20px;
 }
+
+/** theme: black market **/
+.yugen-merchant.theme-black-market 
+{
+	--yugen-gold: #8b0000;
+	--yugen-gold-light: #ff4500;
+	--yugen-parchment: #2b2b2b;
+	--yugen-parchment-dark: #1a1a1a;
+	--yugen-text-dark: #e0e0e0;
+	--yugen-text-muted: #a0a0a0;
+	--yugen-border: #4a4a4a;
+	--yugen-border-light: rgba( 255, 255, 255, 0.1 );
+}
+
+/** theme: arcane tower **/
+.yugen-merchant.theme-arcane-tower 
+{
+	--yugen-gold: #9370db;
+	--yugen-gold-light: #ba55d3;
+	--yugen-parchment: #0f0f1a;
+	--yugen-parchment-dark: #050508;
+	--yugen-text-dark: #f0f0ff;
+	--yugen-text-muted: #b0b0cf;
+	--yugen-border: #4b0082;
+	--yugen-border-light: rgba( 147, 112, 219, 0.2 );
+}
+
+/** theme: druids grove **/
+.yugen-merchant.theme-druids-grove 
+{
+	--yugen-gold: #228b22;
+	--yugen-gold-light: #32cd32;
+	--yugen-parchment: #fdf5e6;
+	--yugen-parchment-dark: #e2d5c3;
+	--yugen-text-dark: #2f4f4f;
+	--yugen-text-muted: #556b2f;
+	--yugen-border: #8b4513;
+	--yugen-border-light: rgba( 34, 139, 34, 0.1 );
+}
+
+/** theme: divine temple **/
+.yugen-merchant.theme-divine-temple 
+{
+	--yugen-gold: #daa520;
+	--yugen-gold-light: #ffd700;
+	--yugen-parchment: #ffffff;
+	--yugen-parchment-dark: #f0f8ff;
+	--yugen-text-dark: #1e3a5f;
+	--yugen-text-muted: #4682b4;
+	--yugen-border: #b0c4de;
+	--yugen-border-light: rgba( 218, 165, 32, 0.1 );
+}
+
+/** theme: dwarven forge **/
+.yugen-merchant.theme-dwarven-forge 
+{
+	--yugen-gold: #e67e22;
+	--yugen-gold-light: #f39c12;
+	--yugen-parchment: #2c3e50;
+	--yugen-parchment-dark: #1a252f;
+	--yugen-text-dark: #ecf0f1;
+	--yugen-text-muted: #bdc3c7;
+	--yugen-border: #7f8c8d;
+	--yugen-border-light: rgba( 231, 76, 60, 0.2 );
+}
+
+/** theme: pirates cove **/
+.yugen-merchant.theme-pirates-cove 
+{
+	--yugen-gold: #cd7f32;
+	--yugen-gold-light: #d4af37;
+	--yugen-parchment: #1a5e63;
+	--yugen-parchment-dark: #0f3d40;
+	--yugen-text-dark: #e0f2f1;
+	--yugen-text-muted: #b2dfdb;
+	--yugen-border: #8d6e63;
+	--yugen-border-light: rgba( 0, 150, 136, 0.2 );
+}
+
+/** theme: underdark city **/
+.yugen-merchant.theme-underdark-city 
+{
+	--yugen-gold: #2ecc71;
+	--yugen-gold-light: #58d68d;
+	--yugen-parchment: #121212;
+	--yugen-parchment-dark: #000000;
+	--yugen-text-dark: #f5f5f5;
+	--yugen-text-muted: #9b59b6;
+	--yugen-border: #8e44ad;
+	--yugen-border-light: rgba( 46, 204, 113, 0.2 );
+}
+
+/** theme: frozen tundra **/
+.yugen-merchant.theme-frozen-tundra 
+{
+	--yugen-gold: #3498db;
+	--yugen-gold-light: #5dade2;
+	--yugen-parchment: #ecf0f1;
+	--yugen-parchment-dark: #d6dbdf;
+	--yugen-text-dark: #2c3e50;
+	--yugen-text-muted: #7f8c8d;
+	--yugen-border: #aed6f1;
+	--yugen-border-light: rgba( 52, 152, 219, 0.2 );
+}
+
+/** theme: desert bazaar **/
+.yugen-merchant.theme-desert-bazaar 
+{
+	--yugen-gold: #f1c40f;
+	--yugen-gold-light: #f4d03f;
+	--yugen-parchment: #f5e6be;
+	--yugen-parchment-dark: #e6d5a7;
+	--yugen-text-dark: #784212;
+	--yugen-text-muted: #a04000;
+	--yugen-border: #d35400;
+	--yugen-border-light: rgba( 241, 196, 15, 0.2 );
+}
+
 .yugen-merchant-config 
 {
 	display: flex;
@@ -52,175 +170,97 @@
 
 .yugen-merchant-config .form-group label 
 {
-	flex: 1;
-	font-weight: 500;
-}
-
-.yugen-merchant-config .form-fields 
-{
-	flex: 0 0 auto;
-	display: flex;
-	justify-content: flex-end;
-}
-
-.yugen-merchant input[type="text"],
-.yugen-merchant input[type="number"],
-.yugen-merchant-config input[type="text"],
-.yugen-merchant-config input[type="number"]
-{
-	width: 100%;
-	background: rgba( 255, 255, 255, 0.8 ) !important;
-	color: #111111 !important;
-	border: 1px solid var( --yugen-border );
-	border-radius: 3px;
-	padding: 2px 5px;
-}
-
-/** ensure the tab container respects standard foundry visibility rules **/
-
-.tab.yugen-merchant-tab 
-{
-	display: none !important;
-}
-
-.tab.yugen-merchant-tab.active 
-{
-	display: flex !important;
-	flex-direction: column;
+	font-weight: 700;
+	color: var( --yugen-text-dark );
 }
 
 .yugen-merchant-config fieldset 
 {
 	border: 1px solid var( --yugen-border );
 	border-radius: 5px;
-	padding: var( --yugen-space-sm );
-	margin: 0;
-	background: rgba( 0, 0, 0, 0.02 );
-	min-width: 0;
+	padding: var( --yugen-space-md );
+	background: var( --yugen-parchment-dark );
 }
 
 .yugen-merchant-config legend 
 {
-	display: flex;
-	align-items: center;
-	gap: var( --yugen-space-xs );
-	font-weight: bold;
-	font-size: 0.85em;
+	font-weight: 700;
+	padding: 0 5px;
 	color: var( --yugen-gold );
-	padding: 0 var( --yugen-space-xs );
-	border: none;
-	width: auto;
+	font-size: 1.1em;
 }
 
-/** rarity multiplier grid - optimized for responsiveness **/
+.yugen-merchant-config .hint 
+{
+	font-size: 0.85em;
+	color: var( --yugen-text-muted );
+	margin-top: 5px;
+}
+
+/** rarity multiplier specific grid **/
 .rarity-grid 
 {
 	display: grid;
-	grid-template-columns: repeat( auto-fill, minmax( 110px, 1fr ) );
-	gap: var( --yugen-space-sm );
-	margin: var( --yugen-space-sm ) 0;
+	grid-template-columns: repeat( auto-fill, minmax( 120px, 1fr ) );
+	gap: 10px;
+	margin: 10px 0;
 }
 
 .rarity-item 
 {
-	margin-bottom: 0 !important;
-	flex-direction: column !important;
-	align-items: stretch !important;
-	border: 1px solid var( --yugen-border-light );
-	padding: 6px !important;
-	border-radius: 4px;
-	background: rgba( 255, 255, 255, 0.3 );
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
 }
 
 .rarity-item label 
 {
-	font-size: 0.75em;
-	font-weight: bold;
-	color: var( --yugen-text-muted );
-	margin-bottom: 4px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	text-align: center;
-	text-transform: none !important;
+	font-size: 0.85em;
 }
 
 .rarity-item .form-fields 
 {
 	display: flex;
 	align-items: center;
-	gap: 4px;
-	justify-content: center;
-	flex: 0 0 auto !important;
+	gap: 2px;
 }
 
 .rarity-item input 
 {
-	text-align: center;
-	width: 45px !important;
-	flex: 0 0 45px !important;
-	height: 22px;
-	font-size: 0.9em;
+	width: 50px;
+	text-align: right;
 }
 
-.rarity-item .unit 
+/** inventory management table **/
+.inventory-table 
 {
-	font-size: 0.7em;
-	font-weight: bold;
-	color: var( --yugen-gold );
-}
-
-.randomize-rarities 
-{
-	margin-top: 4px;
-	width: 100%;
-	background: var( --yugen-parchment-dark );
-	border: 1px dashed var( --yugen-gold );
-	color: var( --yugen-gold );
-	font-weight: bold;
-	padding: 4px;
-	font-size: 0.8em;
-	cursor: pointer;
-	transition: all 0.2s ease;
-}
-
-.randomize-rarities:hover 
-{
-	background: var( --yugen-gold );
-	color: #fff;
-	border-style: solid;
-}
-
-.inventory-table
-{
-	max-height: 250px;
+	max-height: 300px;
 	overflow-y: auto;
-	padding-right: 4px;
-	border: 1px solid var( --yugen-border-light );
-	border-radius: 4px;
-	background: rgba( 0, 0, 0, 0.03 );
+	border: 1px solid var( --yugen-border );
+	border-radius: 3px;
+	background: rgba( 0, 0, 0, 0.05 );
+	margin: 10px 0;
 }
 
 .inventory-list 
 {
 	list-style: none;
-	margin: 0;
 	padding: 0;
-	display: flex;
-	flex-direction: column;
-	gap: 2px;
+	margin: 0;
 }
 
 .inventory-item 
 {
-	display: grid;
-	grid-template-columns: 1fr auto;
+	display: flex;
+	justify-content: space-between;
 	align-items: center;
-	padding: 6px 10px;
-	margin-bottom: 4px;
-	background: rgba( 255, 255, 255, 0.4 );
-	border: 1px solid var( --yugen-border-light );
-	border-radius: 4px;
+	padding: 5px 8px;
+	border-bottom: 1px solid var( --yugen-border-light );
+}
+
+.inventory-item:last-child 
+{
+	border-bottom: none;
 }
 
 .inventory-item .item-name 
@@ -228,101 +268,80 @@
 	display: flex;
 	align-items: center;
 	gap: 10px;
-	font-weight: 600;
-	color: var( --yugen-text-dark );
-	font-size: 0.95em;
-	overflow: hidden;
 }
 
 .inventory-item .item-image 
 {
-	min-width: 32px;
-	width: 32px;
-	height: 32px;
-	border: 1px solid var( --yugen-border );
-	border-radius: 4px;
+	width: 24px;
+	height: 24px;
+	border-radius: 3px;
 	overflow: hidden;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background: #fff;
+	background: #333;
 }
 
-.inventory-item .item-image img 
+.inventory-item img 
 {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 }
 
+.inventory-item .name-text 
+{
+	font-weight: 500;
+	font-size: 0.9em;
+}
+
 .inventory-item .item-controls 
 {
 	display: flex;
-	gap: 6px;
-	padding-left: 10px;
+	gap: 5px;
 }
 
-.control-button
+.control-button 
 {
-	width: 28px;
-	height: 28px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 0;
-	border: 1px solid var( --yugen-border );
-	border-radius: 4px;
-	background: var( --yugen-parchment-dark );
-	color: var( --yugen-text-dark );
+	background: none;
+	border: none;
 	cursor: pointer;
+	padding: 2px 5px;
+	border-radius: 3px;
+	color: #666;
+	transition: all 0.2s;
 }
 
-.control-button:hover
+.control-button:hover 
 {
-	background: var( --yugen-gold );
-	color: #fff;
+	color: var( --yugen-gold );
+	background: rgba( 0, 0, 0, 0.1 );
 }
 
-/** shop window applicationv2 styles **/
+.delete-item:hover 
+{
+	color: #c0392b;
+}
+
+/** base shop window styles **/
 .yugen-merchant.shop 
 {
-	min-height: 400px;
-	min-width: 450px;
-}
-
-.yugen-merchant.shop .window-content 
-{
+	display: flex;
+	flex-direction: column;
 	background: var( --yugen-parchment );
 	color: var( --yugen-text-dark );
-	font-family: var( --font-primary );
-	padding: 0;
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
+	font-family: "Signika", sans-serif;
 }
 
-.yugen-shop-container 
-{
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-	min-height: 0;
-}
-
-/** shop header and merchant info **/
 .shop-header 
 {
 	background: var( --yugen-parchment-dark );
 	border-bottom: 2px solid var( --yugen-gold );
 	padding: var( --yugen-space-md );
-	box-shadow: 0 2px 5px rgba( 0, 0, 0, 0.1 );
 }
 
 .merchant-info 
 {
-	align-items: center;
 	gap: var( --yugen-space-md );
-	margin-bottom: var( --yugen-space-md );
+	align-items: center;
+	margin-bottom: var( --yugen-space-sm );
 }
 
 .merchant-img 
@@ -331,7 +350,6 @@
 	height: 64px;
 	border: 2px solid var( --yugen-gold );
 	border-radius: 5px;
-	object-fit: cover;
 	box-shadow: 0 0 5px rgba( 0, 0, 0, 0.2 );
 }
 
@@ -339,94 +357,63 @@
 {
 	margin: 0;
 	border: none;
-	font-family: var( --dnd5e-font-roboto-slab, serif );
 	font-size: 1.5em;
-	color: var( --yugen-text-dark );
-}
-
-.discount-pill 
-{
-	background: rgba( 159, 132, 77, 0.15 );
-	border: 1px solid var( --yugen-gold );
-	border-radius: 12px;
-	padding: 2px 10px;
-	font-size: 0.75em;
-	font-weight: bold;
 	color: var( --yugen-gold );
-	margin-top: var( --yugen-space-xs );
 }
 
-.discount-pill.funds 
+.funds 
 {
-	background: rgba( 99, 78, 36, 0.1 );
-	color: #634e24;
+	font-weight: bold;
+	color: var( --yugen-text-muted );
+	font-size: 0.9em;
 }
 
-/** tab navigation **/
+/** tabs navigation **/
 .shop-tabs 
 {
-	margin-top: var( --yugen-space-md );
-	border-bottom: 1px solid var( --yugen-border-light );
-	gap: var( --yugen-space-xs );
-	flex: 0 0 auto;
+	border-top: 1px solid var( --yugen-border-light );
+	padding-top: var( --yugen-space-sm );
 }
 
 .shop-tabs .item 
 {
-	padding: var( --yugen-space-sm );
-	font-weight: 500;
-	text-align: center;
+	border: none;
+	font-weight: bold;
 	color: var( --yugen-text-muted );
-	border-bottom: 3px solid transparent;
-	transition: all 0.2s ease;
-	cursor: pointer;
+	transition: all 0.2s;
 }
 
 .shop-tabs .item:hover 
 {
-	color: var( --yugen-text-dark );
-	background: rgba( 0, 0, 0, 0.03 );
+	color: var( --yugen-gold-light );
 }
 
 .shop-tabs .item.active 
 {
-	color: var( --yugen-text-dark );
-	font-weight: 800;
-	border-bottom-color: var( --yugen-gold );
-	background: rgba( 159, 132, 77, 0.1 );
+	color: var( --yugen-gold );
+	text-shadow: 0 0 5px rgba( 218, 165, 32, 0.2 );
 }
 
 .shop-tabs .item.gm-only 
 {
-	border-left: 1px solid var( --yugen-border-light );
-	background: rgba( 159, 132, 77, 0.05 );
+	border-left: 2px solid var( --yugen-gold );
+	margin-left: 10px;
+	padding-left: 15px;
 }
 
-/** shop content and item lists **/
+/** shop content and lists **/
 .shop-content 
 {
+	padding: var( --yugen-space-md );
 	flex: 1;
 	overflow-y: auto;
-	padding: var( --yugen-space-sm );
-	min-height: 0;
-}
-
-.shop-content .tab 
-{
-	display: none;
-}
-
-.shop-content .tab.active 
-{
-	display: flex;
-	flex-direction: column;
 }
 
 .shop-list 
 {
 	list-style: none;
+	padding: 0;
 	margin: 0;
-	padding: var( --yugen-space-xs );
 	display: flex;
 	flex-direction: column;
 	gap: var( --yugen-space-sm );
@@ -434,32 +421,28 @@
 
 .shop-item 
 {
-	display: grid !important;
-	grid-template-columns: 48px 1fr 120px 140px;
+	display: flex;
 	align-items: center;
 	gap: var( --yugen-space-md );
 	padding: var( --yugen-space-sm );
-	background: rgba( 255, 255, 255, 0.3 );
+	background: var( --yugen-parchment-dark );
 	border: 1px solid var( --yugen-border-light );
-	border-radius: 4px;
-	box-shadow: 0 2px 4px rgba( 0, 0, 0, 0.08 );
-	transition: all 0.2s ease;
+	border-radius: 5px;
+	transition: transform 0.1s;
 }
 
 .shop-item:hover 
 {
-	background: rgba( 159, 132, 77, 0.15 );
-	border-color: var( --yugen-gold );
+	border-color: var( --yugen-gold-light );
 	transform: translateX( 2px );
 }
 
-.shop-item .item-img
+.shop-item .item-img 
 {
-	width: 48px;
-	height: 48px;
+	width: 40px;
+	height: 40px;
 	border: 1px solid var( --yugen-border );
-	border-radius: 4px;
-	object-fit: cover;
+	border-radius: 3px;
 }
 
 .shop-item .item-name 
@@ -496,92 +479,103 @@
 	font-size: 0.85em;
 	color: var( --yugen-text-muted );
 	font-weight: 400;
-	font-style: normal;
-	margin-left: var( --yugen-space-sm );
-}
-
-.shop-item .heavy-warning 
-{
-	color: #d9534f;
-	margin-left: var( --yugen-space-sm );
-	font-size: 0.9em;
-	animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-	0% { opacity: 0.6; }
-	50% { opacity: 1; }
-	100% { opacity: 0.6; }
 }
 
 .shop-item .item-price 
 {
-	font-weight: 800;
-	color: #634e24;
-	text-align: right;
-	font-family: var( --font-mono );
-	font-size: 1.1em;
+	margin-left: auto;
+	font-weight: 900;
+	color: var( --yugen-gold );
+	white-space: nowrap;
 }
 
 .shop-item .controls 
 {
 	display: flex;
-	justify-content: flex-end;
-	gap: 6px;
-}
-
-.shop-item .info-btn 
-{
-	background: var( --yugen-parchment-dark );
-	color: var( --yugen-gold );
-	border: 1px solid var( --yugen-gold );
-	padding: 5px;
-	width: 28px;
-	height: 28px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	border-radius: 4px;
-}
-
-.shop-item .info-btn:hover 
-{
-	background: var( --yugen-gold );
-	color: #fff;
+	gap: var( --yugen-space-xs );
 }
 
 .shop-item button 
 {
 	background: var( --yugen-gold );
 	color: #fff;
-	border: 1px solid #7a663b;
-	border-radius: 4px;
-	padding: 5px 12px;
-	font-size: 0.9em;
+	border: none;
+	border-radius: 3px;
+	padding: 3px 10px;
 	font-weight: bold;
 	cursor: pointer;
-	transition: all 0.2s ease;
+	transition: background 0.2s;
 }
 
 .shop-item button:hover 
 {
 	background: var( --yugen-gold-light );
-	box-shadow: 0 1px 3px rgba( 0, 0, 0, 0.2 );
 }
 
-
-.yugen-merchant-hud-shop 
+.shop-item .info-btn 
 {
-	display: flex !important;
-	justify-content: center;
-	align-items: center;
-	z-index: 100 !important;
+	background: none;
+	color: var( --yugen-text-muted );
+	padding: 0 5px;
 }
 
+.shop-item .info-btn:hover 
+{
+	background: none;
+	color: var( --yugen-gold );
+}
+
+/** weight and encumbrance warnings **/
+.heavy-warning 
+{
+	color: #c0392b;
+	animation: yugen-pulse 2s infinite;
+	font-size: 0.9em;
+	margin-left: 5px;
+}
+
+@keyframes yugen-pulse 
+{
+	0% { opacity: 0.6; }
+	50% { opacity: 1; }
+	100% { opacity: 0.6; }
+}
+
+/** scrollbar styling **/
+.shop-content::-webkit-scrollbar 
+{
+	width: 6px;
+}
+
+.shop-content::-webkit-scrollbar-track 
+{
+	background: rgba( 0, 0, 0, 0.05 );
+}
+
+.shop-content::-webkit-scrollbar-thumb 
+{
+	background: var( --yugen-gold );
+	border-radius: 3px;
+}
+
+/** hud button styling **/
 .yugen-merchant-hud-shop i 
 {
-	/* removed custom gold color to restore native white appearance */
+	color: var( --foundry-text-light );
+	text-shadow: 0 0 5px #000;
+	transition: all 0.2s;
+}
+
+.yugen-merchant-hud-shop:hover i 
+{
+	color: var( --yugen-gold-light ) !important;
+	transform: scale( 1.1 );
+}
+
+.yugen-merchant-hud-shop.active i 
+{
+	color: var( --yugen-gold ) !important;
+	text-shadow: 0 0 8px var( --yugen-gold-light );
 }
 
 .yugen-merchant-hud-shop.uninitialized i 
@@ -636,4 +630,3 @@
 	border-radius: 4px;
 	cursor: pointer;
 }
-

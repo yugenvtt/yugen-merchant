@@ -1,14 +1,14 @@
 {
 	"id": "yugen-merchant",
 	"title": "yugen-merchant",
-	"description": "Dynamic npc merchant module with quality-based pricing and custom buy/sell rates.",
-	"version": "1.0.2",
+	"description": "Dynamic NPC merchant module with quality-based pricing and custom buy/sell rates.",
+	"version": "1.0.3",
 	"library": false,
 	"authors": [
 		{
 			"name": "yugen.",
-			"url": "",
-			"discord": ""
+			"url": "https://github.com/yugenvtt/yugen-merchant",
+			"discord": "yugenvtt"
 		}
 	],
 	"esmodules": [

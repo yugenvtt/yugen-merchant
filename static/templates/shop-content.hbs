@@ -102,6 +102,24 @@
 							<input type="number" data-action="update-range" class="interaction-range" value="{{merchant.interaction_range}}" min="0" step="1">
 						</div>
 					</div>
+
+					<div class="form-group flexrow">
+						<label>{{localize 'yugen-merchant.config.merchant-status.visual-theme'}}</label>
+						<div class="form-fields">
+							<select data-action="update-theme" name="theme">
+								<option value="default" {{#if (eq merchant.theme 'default')}}selected{{/if}}>Default (Classic)</option>
+								<option value="black-market" {{#if (eq merchant.theme 'black-market')}}selected{{/if}}>Black Market</option>
+								<option value="arcane-tower" {{#if (eq merchant.theme 'arcane-tower')}}selected{{/if}}>Arcane Tower</option>
+								<option value="druids-grove" {{#if (eq merchant.theme 'druids-grove')}}selected{{/if}}>Druid's Grove</option>
+								<option value="divine-temple" {{#if (eq merchant.theme 'divine-temple')}}selected{{/if}}>Divine Temple</option>
+								<option value="dwarven-forge" {{#if (eq merchant.theme 'dwarven-forge')}}selected{{/if}}>Dwarven Forge</option>
+								<option value="pirates-cove" {{#if (eq merchant.theme 'pirates-cove')}}selected{{/if}}>Pirate's Cove</option>
+								<option value="underdark-city" {{#if (eq merchant.theme 'underdark-city')}}selected{{/if}}>Underdark City</option>
+								<option value="frozen-tundra" {{#if (eq merchant.theme 'frozen-tundra')}}selected{{/if}}>Frozen Tundra</option>
+								<option value="desert-bazaar" {{#if (eq merchant.theme 'desert-bazaar')}}selected{{/if}}>Desert Bazaar</option>
+							</select>
+						</div>
+					</div>
 				</div>
 				<p class="hint">{{localize 'yugen-merchant.config.merchant-status.hint'}}</p>
 			</fieldset>

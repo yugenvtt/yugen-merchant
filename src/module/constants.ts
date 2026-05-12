@@ -16,5 +16,6 @@ export const FLAGS =
 	GREETING_MESSAGE: 'greeting-message',
 	ALLOW_OWNER_MANAGE: 'allow-owner-manage',
 	INTERACTION_RANGE: 'interaction-range',
-	SERVICES: 'services'
+	SERVICES: 'services',
+	THEME: 'theme'
 };

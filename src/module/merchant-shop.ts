@@ -104,6 +104,7 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 		'update-multiplier': MerchantShop._on_update_multiplier,
 		'update-greeting': MerchantShop._on_update_greeting,
 		'update-range': MerchantShop._on_update_range,
+		'update-theme': MerchantShop._on_update_theme,
 		'randomize-rarities': MerchantShop._on_randomize_rarities,
 		'buy-service': MerchantShop._on_buy_service,
 		'add-service': MerchantShop._on_add_service,
@@ -126,6 +127,12 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 	static async _on_update_range( this: MerchantShop, event: any, target: HTMLInputElement ) 
 	{
 		await set_flag( this.token.document, FLAGS.INTERACTION_RANGE, parseInt( target.value ) || 0 );
+	}
+
+	static async _on_update_theme( this: MerchantShop, event: any, target: HTMLSelectElement ) 
+	{
+		await set_flag( this.token.document, FLAGS.THEME, target.value );
+		this.render( );
 	}
 
 	/**
@@ -306,7 +313,8 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 				is_merchant: is_merchant,
 				greeting: get_flag( doc, FLAGS.GREETING_MESSAGE ) ?? '',
 				allow_owner_manage: allow_owner_manage,
-				interaction_range: get_flag( doc, FLAGS.INTERACTION_RANGE ) ?? 10
+				interaction_range: get_flag( doc, FLAGS.INTERACTION_RANGE ) ?? 10,
+				theme: get_flag( doc, FLAGS.THEME ) ?? 'default'
 			},
 			buy_multiplier,
 			sell_multiplier,
@@ -381,6 +389,18 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 	protected _onRender( context: any, options: any ): void 
 	{
 		super._onRender( context, options );
+
+		/** apply visual theme class **/
+		const theme = context.merchant.theme;
+		
+		/** remove all existing theme classes **/
+		const existing_themes = Array.from( this.element.classList ).filter( ( c: any ) => c.startsWith( 'theme-' ) );
+		this.element.classList.remove( ...existing_themes );
+
+		if ( theme !== 'default' ) 
+		{
+			this.element.classList.add( `theme-${ theme }` );
+		}
 
 		/** handle greeting message for the user who opens the shop **/
 		if ( context.merchant.is_merchant && context.merchant.greeting && !this._greeting_sent ) 
