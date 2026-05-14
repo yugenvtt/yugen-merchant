@@ -2,7 +2,7 @@
 	"id": "yugen-merchant",
 	"title": "yugen-merchant",
 	"description": "Dynamic NPC merchant module with quality-based pricing and custom buy/sell rates.",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"library": false,
 	"authors": [
 		{
@@ -25,11 +25,11 @@
 		}
 	],
 	"compatibility": {
-		"minimum": "14",
+		"minimum": "13",
 		"verified": "14"
 	},
 	"url": "https://github.com/yugenvtt/yugen-merchant",
 	"manifest": "https://raw.githubusercontent.com/yugenvtt/yugen-merchant/refs/heads/main/static/module.json",
-	"download": "https://github.com/yugenvtt/yugen-merchant/releases/download/1.0.3/module.zip",
+	"download": "https://github.com/yugenvtt/yugen-merchant/releases/download/1.0.4/module.zip",
 	"socket": true
 }

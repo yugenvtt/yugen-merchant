@@ -45,9 +45,11 @@ export const get_actor_currency = ( actor: any ): any =>
 	const dnd5e_currency = actor.system?.currency;
 	if ( dnd5e_currency ) 
 	{
+		console.log( `yugen-merchant | resolved dnd5e currency for ${ actor.name }:`, dnd5e_currency );
 		return dnd5e_currency;
 	}
 
+	console.warn( `yugen-merchant | could not resolve currency for ${ actor.name }` );
 	return { cp: 0, sp: 0, gp: 0, pp: 0 };
 };
 

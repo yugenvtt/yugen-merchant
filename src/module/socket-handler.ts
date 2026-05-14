@@ -8,15 +8,23 @@ import { calculate_price, get_flag, set_flag, get_actor_currency } from './utils
 
 export class SocketHandler 
 {
+	private static _registered = false;
+
 	/**
 	 * registers socket listeners for the module
 	 **/
 	static register( ): void 
 	{
+		if ( this._registered ) 
+		{
+			return;
+		}
+
 		const socket_name = 'module.yugen-merchant';
 
 		if ( !( game as any ).socket ) 
 		{
+			console.error( 'yugen-merchant | socket registration failed: game.socket is missing' );
 			return;
 		}
 
@@ -24,26 +32,35 @@ export class SocketHandler
 		
 		( game as any ).socket.on( socket_name, ( data: any ) => 
 		{
-			const is_gm = ( game as any ).user.isGM;
-			console.log( `yugen-merchant | socket message received | isGM: ${ is_gm }`, data );
+			const user = ( game as any ).user;
+			console.log( `yugen-merchant | socket message received by ${ user.name } | isGM: ${ user.isGM }`, data );
 
-			if ( data.action === 'purchase' && is_gm ) 
+			if ( !user.isGM ) 
 			{
-				this.handle_purchase( data ).catch( err => console.error( 'yugen-merchant | purchase error:', err ) );
+				return;
 			}
-			else if ( data.action === 'sale' && is_gm ) 
+
+			console.log( `yugen-merchant | GM ${ user.name } routing action: ${ data.action }` );
+
+			if ( data.action === 'purchase' ) 
 			{
-				this.handle_sale( data ).catch( err => console.error( 'yugen-merchant | sale error:', err ) );
+				SocketHandler.handle_purchase( data ).catch( err => console.error( 'yugen-merchant | purchase error:', err ) );
 			}
-			else if ( data.action === 'purchase_service' && is_gm ) 
+			else if ( data.action === 'sale' ) 
 			{
-				this.handle_purchase_service( data ).catch( err => console.error( 'yugen-merchant | service purchase error:', err ) );
+				SocketHandler.handle_sale( data ).catch( err => console.error( 'yugen-merchant | sale error:', err ) );
+			}
+			else if ( data.action === 'purchase_service' ) 
+			{
+				SocketHandler.handle_purchase_service( data ).catch( err => console.error( 'yugen-merchant | service purchase error:', err ) );
 			}
 			else if ( data.action === 'service_approved' ) 
 			{
-				this.handle_service_approved( data );
+				SocketHandler.handle_service_approved( data );
 			}
 		} );
+
+		this._registered = true;
 	}
 
 	/**
@@ -61,26 +78,33 @@ export class SocketHandler
 	 **/
 	private static async handle_purchase( data: any ): Promise<void> 
 	{
+		console.log( 'yugen-merchant | processing purchase', data );
 		const token = ( canvas as any ).tokens?.get( data.token_id ) || ( canvas as any ).tokens?.placeables.find( ( t: any ) => t.id === data.token_id );
 		const player_actor = this._resolve_actor( data.player_id );
 		
 		if ( !token || !player_actor ) 
 		{
-			console.error( 'yugen-merchant | purchase error: could not resolve context', data );
+			console.error( 'yugen-merchant | purchase error: could not resolve context', { token, player_actor, data } );
 			return;
 		}
 
-		const inventory = get_flag( token.document, FLAGS.INVENTORY ) ?? [ ];
+		/** check both token and actor for inventory to be robust across v13/v14 **/
+		const doc = token.document;
+		const inventory = get_flag( doc, FLAGS.INVENTORY ) ?? get_flag( doc.actor, FLAGS.INVENTORY ) ?? [ ];
 		const item_data = inventory[ data.item_index ];
+		
 		if ( !item_data ) 
 		{
+			console.warn( 'yugen-merchant | purchase warning: item not found in inventory', data.item_index );
 			return;
 		}
+
+		console.log( `yugen-merchant | purchasing ${ item_data.name }...` );
 
 		const cost = calculate_price( 
 			item_data.system?.price?.value || 0, 
 			item_data.system?.rarity || 'common', 
-			token.document, 
+			doc, 
 			true 
 		);
 		
@@ -88,23 +112,28 @@ export class SocketHandler
 		const player_funds_obj = get_actor_currency( player_actor );
 		const player_funds = player_funds_obj[ denom ] || 0;
 
+		console.log( `yugen-merchant | cost: ${ cost } ${ denom } | player funds: ${ player_funds } ${ denom }`, { player_funds_obj } );
+
 		if ( player_funds < cost ) 
 		{
-			ui.notifications?.error( `Insufficient ${ denom }.` );
+			( ui as any ).notifications?.error( `Insufficient ${ denom }.` );
 			return;
 		}
 
 		const update_path = player_actor.system?.resources?.coinage ? 'system.resources.coinage' : 'system.currency';
+		console.log( `yugen-merchant | updating currency: ${ player_funds } -> ${ player_funds - cost } ${ denom }` );
 		await player_actor.update( { [`${ update_path }.${ denom }`]: player_funds - cost } );
 		
 		const existing_player_item = player_actor.items.find( ( i: any ) => i.name === item_data.name && i.type === item_data.type );
 		if ( existing_player_item ) 
 		{
+			console.log( 'yugen-merchant | stacking item in player inventory' );
 			const new_qty = ( existing_player_item.system.quantity || 1 ) + 1;
 			await existing_player_item.update( { 'system.quantity': new_qty } );
 		}
 		else 
 		{
+			console.log( 'yugen-merchant | creating new item in player inventory' );
 			const new_item_data = ( foundry.utils as any ).duplicate( item_data );
 			new_item_data.system.quantity = 1;
 			await player_actor.createEmbeddedDocuments( 'Item', [ new_item_data ] );
@@ -128,8 +157,11 @@ export class SocketHandler
 			inventory.splice( data.item_index, 1 );
 		}
 
-		await set_flag( token.document, FLAGS.INVENTORY, inventory, { render: false } );
-		ui.notifications?.info( `${ player_actor.name } purchased ${ item_data.name } for ${ cost } ${ denom }.` );
+		/** update whichever document holds the inventory flag **/
+		const target_doc = get_flag( doc, FLAGS.INVENTORY ) !== undefined ? doc : doc.actor;
+		await set_flag( target_doc, FLAGS.INVENTORY, inventory, { render: false } );
+		
+		( ui as any ).notifications?.info( `${ player_actor.name } purchased ${ item_data.name } for ${ cost } ${ denom }.` );
 	}
 
 	/**
@@ -292,14 +324,24 @@ export class SocketHandler
 	static async emit_purchase( token_id: string, player_id: string, item_index: number ): Promise<void> 
 	{
 		const data = { action: 'purchase', token_id, player_id, item_index };
-		console.log( 'yugen-merchant | emitting purchase request', data );
+		const is_gm = ( game as any ).user.isGM;
+		console.log( `yugen-merchant | emitting purchase request | user: ${ ( game as any ).user.name } | isGM: ${ is_gm }`, data );
 
-		if ( ( game as any ).user.isGM ) 
+		if ( is_gm ) 
 		{
-			await this.handle_purchase( data );
+			console.log( 'yugen-merchant | calling handle_purchase directly (GM context)' );
+			try 
+			{
+				await SocketHandler.handle_purchase( data );
+			}
+			catch ( err ) 
+			{
+				console.error( 'yugen-merchant | direct purchase call failed:', err );
+			}
 		}
 		else 
 		{
+			console.log( 'yugen-merchant | user is not GM, emitting socket request' );
 			( game as any ).socket.emit( 'module.yugen-merchant', data );
 		}
 	}
@@ -311,7 +353,14 @@ export class SocketHandler
 
 		if ( ( game as any ).user.isGM ) 
 		{
-			await this.handle_sale( data );
+			try 
+			{
+				await this.handle_sale( data );
+			}
+			catch ( err ) 
+			{
+				console.error( 'yugen-merchant | direct sale call failed:', err );
+			}
 		}
 		else 
 		{

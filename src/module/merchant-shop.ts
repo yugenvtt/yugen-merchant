@@ -165,10 +165,20 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 			return false;
 		}
 
-		/** V14 robust distance calculation using measurePath **/
-		const waypoints = [ player_token.center, merchant_token.center ];
-		const result = ( canvas as any ).grid.measurePath( waypoints );
-		const distance = result.distance || 0;
+		/** calculate distance - handle v14 measurePath vs v13 measureDistances **/
+		let distance = 0;
+		if ( ( canvas as any ).grid.measurePath ) 
+		{
+			const result = ( canvas as any ).grid.measurePath( [ player_token.center, merchant_token.center ] );
+			distance = result.distance || 0;
+		}
+		else 
+		{
+			/** v13 fallback **/
+			const ray = new Ray( player_token.center, merchant_token.center );
+			const distances = ( canvas as any ).grid.measureDistances( [ { ray } ], { gridSpaces: true } );
+			distance = distances[ 0 ] || 0;
+		}
 		
 		if ( distance > range ) 
 		{
@@ -700,7 +710,7 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 
 	static _on_add_service( this: MerchantShop, event: any ) 
 	{
-		new MerchantServiceEditor( this.token.document, -1, { }, ( ) => this.render( ) ).render( true );
+		new MerchantServiceEditor( this.token.document, -1, { }, ( ) => this.render( ) ).render( { force: true } );
 	}
 
 	static _on_edit_service( this: MerchantShop, event: any, target: HTMLElement ) 
@@ -708,7 +718,7 @@ export class MerchantShop extends ( HandlebarsApplicationMixin( ApplicationV2 ) 
 		const index = parseInt( target.closest( '.inventory-item' )?.getAttribute( 'data-index' ) || '-1' );
 		if ( index !== -1 ) 
 		{
-			new MerchantServiceEditor( this.token.document, index, { }, ( ) => this.render( ) ).render( true );
+			new MerchantServiceEditor( this.token.document, index, { }, ( ) => this.render( ) ).render( { force: true } );
 		}
 	}
 

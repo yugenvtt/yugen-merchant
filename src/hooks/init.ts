@@ -13,11 +13,14 @@ export const init_hook = ( ): void =>
 {
 	Hooks.once( 'init', ( ) => 
 	{
+		/** register sockets in init hook for v13/v14 compatibility **/
+		SocketHandler.register( );
 		/** 
 		 * wrap token permission checks early.
 		 * permit HUD and view interactions for merchants even without observer/owner permissions.
 		 **/
-		const proto = ( Token as any ).prototype;
+		const token_cls = ( CONFIG as any ).Token.objectClass;
+		const proto = ( token_cls as any ).prototype;
 
 		const original_can = proto.can;
 		proto.can = function( user: any, action: string ) 
@@ -119,8 +122,7 @@ export const init_hook = ( ): void =>
 
 	Hooks.once( 'ready', ( ) => 
 	{
-		/** register sockets in ready hook for V14 network stability **/
-		SocketHandler.register( );
+		/** ready hook logic **/
 	} );
 
 	/**
@@ -131,13 +133,16 @@ export const init_hook = ( ): void =>
 		const is_merchant = get_flag( token.document, FLAGS.IS_MERCHANT );
 		if ( is_merchant ) 
 		{
-			/** use PIXI eventMode for V14 compatibility **/
-			if ( token.eventMode !== 'static' ) 
+			/** use PIXI eventMode for V14, fallback to interactive for V13 **/
+			if ( 'eventMode' in token ) 
 			{
 				token.eventMode = 'static';
-				token.cursor = 'pointer';
 			}
-
+			else 
+			{
+				token.interactive = true;
+			}
+			token.cursor = 'pointer';
 			/** add a direct pointerup listener as a fail-safe for double clicks **/
 			if ( !token._merchantClickBound ) 
 			{
