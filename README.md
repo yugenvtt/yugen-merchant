@@ -7,7 +7,7 @@
   <a href="https://www.youtube.com/watch?v=y_xd5sPbzKs">Click here for video demonstration</a>
 </p>
 
-_A dynamic NPC merchant module for Foundry VTT V14, featuring a universal GUI, macro-driven services, and quality-based pricing._
+_A dynamic NPC merchant module for Foundry VTT V13 & V14, featuring a universal GUI, macro-driven services, and quality-based pricing._
 
 ---
 
