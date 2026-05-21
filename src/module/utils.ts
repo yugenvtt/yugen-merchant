@@ -10,8 +10,8 @@ import { MODULE_ID, FLAGS } from './constants.js';
  **/
 export const get_flag = ( doc: any, key: string ): any => 
 {
-	const document = doc.document || doc;
-	return document.getFlag( MODULE_ID, key );
+	/** retrieve flag from document via shared library **/
+	return ( globalThis as any ).yugen_utils.get_flag( doc, MODULE_ID, key );
 };
 
 /**
@@ -19,9 +19,8 @@ export const get_flag = ( doc: any, key: string ): any =>
  **/
 export const set_flag = async ( doc: any, key: string, value: any, options: any = { } ): Promise<any> => 
 {
-	const document = doc.document || doc;
-	/** allow passing render: false to prevent full application refreshes **/
-	return await document.setFlag( MODULE_ID, key, value, options );
+	/** set flag on document via shared library **/
+	return await ( globalThis as any ).yugen_utils.set_flag( doc, MODULE_ID, key, value, options );
 };
 
 /**
@@ -29,28 +28,8 @@ export const set_flag = async ( doc: any, key: string, value: any, options: any 
  **/
 export const get_actor_currency = ( actor: any ): any => 
 {
-	if ( !actor ) 
-	{
-		return { cp: 0, sp: 0, gp: 0, pp: 0 };
-	}
-
-	/** pf2e uses system.resources.coinage **/
-	const pf2e_currency = actor.system?.resources?.coinage;
-	if ( pf2e_currency ) 
-	{
-		return pf2e_currency;
-	}
-
-	/** dnd5e uses system.currency **/
-	const dnd5e_currency = actor.system?.currency;
-	if ( dnd5e_currency ) 
-	{
-		console.log( `yugen-merchant | resolved dnd5e currency for ${ actor.name }:`, dnd5e_currency );
-		return dnd5e_currency;
-	}
-
-	console.warn( `yugen-merchant | could not resolve currency for ${ actor.name }` );
-	return { cp: 0, sp: 0, gp: 0, pp: 0 };
+	/** retrieve currency object via shared library **/
+	return ( globalThis as any ).yugen_utils.get_actor_currency( actor );
 };
 
 /**
